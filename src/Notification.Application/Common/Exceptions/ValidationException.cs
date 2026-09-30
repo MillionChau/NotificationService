@@ -1,0 +1,19 @@
+namespace Notification.Application.Common.Exceptions;
+
+/// <summary>Validation exception tối giản theo FluentValidation — giống CommunityService.</summary>
+public class ValidationException : Exception
+{
+    public IDictionary<string, string[]> Errors { get; }
+
+    public ValidationException() : base("One or more validation failures have occurred.")
+    {
+        Errors = new Dictionary<string, string[]>();
+    }
+
+    public ValidationException(IEnumerable<FluentValidation.Results.ValidationFailure> failures) : this()
+    {
+        Errors = failures
+            .GroupBy(f => f.PropertyName, f => f.ErrorMessage)
+            .ToDictionary(g => g.Key, g => g.ToArray());
+    }
+}
