@@ -72,6 +72,9 @@ public static class DependencyInjection
             };
         });
 
+        // RabbitMQ Notification Consumer
+        services.AddHostedService<RabbitMqNotificationConsumer>();
+
         return services;
     }
 }
